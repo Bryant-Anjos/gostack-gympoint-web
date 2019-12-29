@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { MdKeyboardArrowLeft, MdCheck } from 'react-icons/md'
 import { Form, Input } from '@rocketseat/unform'
 import { toast } from 'react-toastify'
+import PropTypes from 'prop-types'
 import * as Yup from 'yup'
 
 import api from '~/services/api'
@@ -85,7 +86,7 @@ export default function Update({ location }) {
           </div>
 
           <div>
-            <label htmlFor="email">
+            <label htmlForIdade="email">
               <p>Endereço de e-mail</p>
               <Input name="email" type="text" />
             </label>
@@ -111,4 +112,8 @@ export default function Update({ location }) {
       </section>
     </>
   )
+}
+
+Update.propTypes = {
+  location: PropTypes.shape({ state: PropTypes.object }).isRequired,
 }

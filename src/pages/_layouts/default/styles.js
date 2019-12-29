@@ -139,6 +139,10 @@ export const Wrapper = styled.div`
           display: flex;
           flex-direction: column;
 
+          & + label {
+            margin-left: 30px;
+          }
+
           p {
             font-size: 16px;
             color: #444;

@@ -5,7 +5,7 @@ import List from './List'
 import Create from './Create'
 import Update from './Update'
 
-import { Container } from './styles'
+import { Container } from '~/components/Container'
 
 export default function Students() {
   return (

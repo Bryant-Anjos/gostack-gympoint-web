@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { signOut } from '~/store/modules/auth/actions'
+import history from '~/services/history'
 
 import logo from '~/img/logo@1x.png'
 
@@ -11,6 +12,7 @@ import { Container, LinkItem, Profile } from './styles'
 export default function Header() {
   const dispatch = useDispatch()
   const profile = useSelector(state => state.user.profile)
+  const path = history.location.pathname.split('/')[1]
 
   function handleSignOut() {
     dispatch(signOut())
@@ -27,12 +29,18 @@ export default function Header() {
 
       <aside>
         <div>
-          <LinkItem selected to="/students">
+          <LinkItem selected={path === 'students'} to="/students">
             Alunos
           </LinkItem>
-          <LinkItem to="/plans">Planos</LinkItem>
-          <LinkItem to="/enrollments">Matrículas</LinkItem>
-          <LinkItem to="/questions">Pedidos de Auxílio</LinkItem>
+          <LinkItem selected={path === 'plans'} to="/plans">
+            Planos
+          </LinkItem>
+          <LinkItem selected={path === 'enrollments'} to="/enrollments">
+            Matrículas
+          </LinkItem>
+          <LinkItem selected={path === 'questions'} to="/questions">
+            Pedidos de Auxílio
+          </LinkItem>
         </div>
 
         <Profile>
