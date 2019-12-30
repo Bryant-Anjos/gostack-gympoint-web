@@ -1,7 +1,14 @@
 import React from 'react'
+import { Route } from 'react-router-dom'
 
-// import { Container } from './styles';
+import List from './List'
+
+import { Container } from '~/components/Container'
 
 export default function Questions() {
-  return <h1>Questions</h1>
+  return (
+    <Container>
+      <Route exact isPrivate path="/questions" component={List} />
+    </Container>
+  )
 }
