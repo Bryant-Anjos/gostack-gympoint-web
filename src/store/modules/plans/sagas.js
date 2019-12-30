@@ -19,7 +19,15 @@ export function* list() {
   try {
     const response = yield call(api.get, 'plans')
 
-    yield put(listSuccess(response.data))
+    const plans = response.data.map(plan => ({
+      ...plan,
+      price_formated: new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(plan.price),
+    }))
+
+    yield put(listSuccess(plans))
   } catch (err) {
     toast.error('Falha ao listar planos, tente novamente mais tarde')
     yield put(listFailure())

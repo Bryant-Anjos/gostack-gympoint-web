@@ -22,8 +22,8 @@ export default function Plan({ plan }) {
   return (
     <tr>
       <td>{plan.title}</td>
-      <td>{plan.duration}</td>
-      <td>{plan.price}</td>
+      <td>{`${plan.duration} ${plan.duration > 1 ? 'meses' : 'mês'}`}</td>
+      <td>{plan.price_formated}</td>
       <td>
         <button
           className="update"
@@ -51,6 +51,6 @@ Plan.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     duration: PropTypes.number.isRequired,
-    price: PropTypes.string.isRequired,
+    price_formated: PropTypes.string.isRequired,
   }).isRequired,
 }

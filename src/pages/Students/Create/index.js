@@ -56,21 +56,21 @@ export default function Create() {
 
       <section>
         <Form id="form" schema={schema} onSubmit={handleSubmit}>
-          <div>
+          <div className="input">
             <label htmlFor="name">
               <p className="required">Nome Completo</p>
               <Input name="name" type="text" placeholder="John Doe" />
             </label>
           </div>
 
-          <div>
+          <div className="input">
             <label htmlFor="email">
               <p className="required">Endereço de e-mail</p>
               <Input name="email" type="text" placeholder="exemplo@email.com" />
             </label>
           </div>
 
-          <div>
+          <div className="input">
             <label htmlFor="birthday">
               <p className="required">Data de nascimento</p>
               <Input name="birthday" type="text" />

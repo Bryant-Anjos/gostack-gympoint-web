@@ -78,21 +78,21 @@ export default function Update({ location }) {
           schema={schema}
           onSubmit={data => handleSubmit(student.id, data)}
         >
-          <div>
+          <div className="input">
             <label htmlFor="name">
               <p>Nome Completo</p>
               <Input name="name" type="text" />
             </label>
           </div>
 
-          <div>
+          <div className="input">
             <label htmlForIdade="email">
               <p>Endereço de e-mail</p>
               <Input name="email" type="text" />
             </label>
           </div>
 
-          <div>
+          <div className="input">
             <label htmlFor="birthday">
               <p>Data de nascimento</p>
               <Input name="birthday" type="text" />

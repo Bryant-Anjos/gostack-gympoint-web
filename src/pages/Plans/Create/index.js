@@ -24,9 +24,14 @@ export default function Create() {
   const [plan, setPlan] = useState({})
 
   const total = useMemo(() => {
-    const value = Number(plan.duration) * Number(plan.price)
+    const price = Number(plan.duration) * Number(plan.price)
 
-    return value ? value.toString() : 0
+    return price
+      ? new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }).format(price)
+      : 0
   }, [plan.price, plan.duration])
 
   function handleSubmit({ title, duration, price }) {
@@ -62,14 +67,14 @@ export default function Create() {
           onSubmit={handleSubmit}
           onChange={e => setPlan({ ...plan, [e.target.id]: e.target.value })}
         >
-          <div>
+          <div className="input">
             <label htmlFor="title">
               <p className="required">Título do plano</p>
               <Input name="title" type="text" />
             </label>
           </div>
 
-          <div>
+          <div className="input">
             <label htmlFor="duration">
               <p className="required">
                 Duração <span>(em meses)</span>
