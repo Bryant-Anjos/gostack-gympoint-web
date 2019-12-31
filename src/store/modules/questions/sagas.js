@@ -52,6 +52,6 @@ export function* update({ payload }) {
 }
 
 export default all([
-  takeLatest('@plans/LIST_REQUEST', list),
-  takeLatest('@plans/UPDATE_REQUEST', update),
+  takeLatest('@questions/LIST_REQUEST', list),
+  takeLatest('@questions/UPDATE_REQUEST', update),
 ])

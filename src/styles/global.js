@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
 import 'react-toastify/dist/ReactToastify.css'
+import 'react-perfect-scrollbar/dist/css/styles.css'
 
 export default createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
@@ -24,7 +25,7 @@ export default createGlobalStyle`
     -webkit-font-smoothing: antialiased;
   }
 
-  body, input, select, button {
+  body, input, select, button, textarea {
     font: 14px 'Roboto', sans-serif;
   }
 
@@ -38,5 +39,18 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+  }
+
+  .ReactModal__Overlay {
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+  }
+
+  .ReactModal__Overlay--after-open {
+    opacity: 1;
+  }
+
+  .ReactModal__Overlay--before-close {
+    opacity: 0;
   }
 `

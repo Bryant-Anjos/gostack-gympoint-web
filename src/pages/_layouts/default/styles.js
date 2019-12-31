@@ -101,6 +101,12 @@ export const Wrapper = styled.div`
           color: #666;
           padding: 10px 0;
 
+          small {
+            margin-left: 10px;
+            padding-left: 10px;
+            border-left: 1px solid #eee;
+          }
+
           button {
             border: none;
             background: none;

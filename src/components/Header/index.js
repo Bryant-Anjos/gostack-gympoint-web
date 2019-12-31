@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { signOut } from '~/store/modules/auth/actions'
 import history from '~/services/history'
 
-import logo from '~/img/logo@1x.png'
+import logo from '~/img/logo.svg'
 
 import { Container, LinkItem, Profile } from './styles'
 

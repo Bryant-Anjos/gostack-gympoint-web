@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 
 import { signInRequest } from '~/store/modules/auth/actions'
 
-import logo from '~/img/logo@1x.png'
+import logo from '~/img/logo.svg'
 
 const schema = Yup.object().shape({
   email: Yup.string()

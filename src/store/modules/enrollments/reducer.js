@@ -82,7 +82,7 @@ export default function enrollments(state = INITIAL_STATE, action) {
           }
         )
 
-        draft.index.push({
+        draft.index.unshift({
           ...enrollment,
           start_date_formated,
           end_date_formated,

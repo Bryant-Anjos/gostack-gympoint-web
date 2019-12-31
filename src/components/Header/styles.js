@@ -12,7 +12,11 @@ export const Container = styled.div`
   }
 
   nav {
-    padding: 10px 30px;
+    padding: 20px 30px;
+
+    img {
+      height: 30px;
+    }
 
     a {
       display: flex;

@@ -39,7 +39,7 @@ export default function plans(state = INITIAL_STATE, action) {
         break
       }
       case '@plans/CREATE_SUCCESS': {
-        draft.index.push(action.payload.plan)
+        draft.index.unshift(action.payload.plan)
         break
       }
       default:

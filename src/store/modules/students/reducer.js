@@ -24,7 +24,7 @@ export default function students(state = INITIAL_STATE, action) {
       }
       case '@students/REMOVE_SUCCESS': {
         const listStudents = state.index.filter(
-          student => student.id !== action.payload.id
+          student => Number(student.id) !== Number(action.payload.id)
         )
 
         draft.index = listStudents
@@ -32,14 +32,14 @@ export default function students(state = INITIAL_STATE, action) {
       }
       case '@students/UPDATE_SUCCESS': {
         const index = state.index.findIndex(
-          student => student.id === action.payload.student.id
+          student => Number(student.id) === Number(action.payload.student.id)
         )
 
         draft.index[index] = action.payload.student
         break
       }
       case '@students/CREATE_SUCCESS': {
-        draft.index.push(action.payload.student)
+        draft.index.unshift(action.payload.student)
         break
       }
       default:

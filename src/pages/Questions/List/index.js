@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { connect, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
-import ReactModal from 'react-modal'
+import { toast } from 'react-toastify'
 
 import Question from './Question'
 
-import { listRequest } from '~/store/modules/plans/actions'
+import { listRequest, updateRequest } from '~/store/modules/questions/actions'
+
+import { Modal, Scroll } from './styles'
 
 function List({ questions, loading }) {
   const dispatch = useDispatch()
   const [open, isOpen] = useState(false)
   const [question, setQuestion] = useState({})
+  const [answer, setAnswer] = useState('')
 
   useEffect(() => {
     if (questions.length === 0) dispatch(listRequest())
@@ -21,6 +24,17 @@ function List({ questions, loading }) {
 
     setQuestion(data)
     isOpen(true)
+  }
+
+  function handleSubmit(id) {
+    if (answer) {
+      dispatch(updateRequest(id, answer))
+      isOpen(false)
+      setQuestion({})
+      setAnswer('')
+    } else {
+      toast.error('A resposta é obrigatória')
+    }
   }
 
   return (
@@ -41,38 +55,37 @@ function List({ questions, loading }) {
               </tr>
             </thead>
             <tbody>
-              {questions.map(question => (
-                <Question
-                  key={question.id}
-                  question={question}
-                  openModal={openModal}
-                />
+              {questions.map(item => (
+                <Question key={item.id} question={item} openModal={openModal} />
               ))}
             </tbody>
           </table>
         )}
 
-        <ReactModal
-          isOpen={open}
-          onRequestClose={() => isOpen(!open)}
-          style={{
-            overlay: {
-              backgroundColor: 'rgba(0, 0, 0, 0.1)',
-            },
-            content: {
-              width: '500px',
-              height: '70%',
-              margin: 'auto',
-              transition: 'opacity .5s',
-            },
-          }}
-        >
-          <h3>Pergunta do aluno</h3>
-          <p>{Object.keys(question).length > 0 ? question.question : ''}</p>
-          <h3>Sua resposta</h3>
-          <textarea name="" id="" cols="30" rows="10" />
-          <button type="submit">Responder aluno</button>
-        </ReactModal>
+        <Modal isOpen={open} onRequestClose={() => isOpen(!open)}>
+          <div>
+            <h3>
+              {Object.keys(question).length === 0
+                ? 'Pergunta do aluno'
+                : `${question.student.name} perguntou`}
+            </h3>
+            <Scroll>
+              <p>{Object.keys(question).length > 0 ? question.question : ''}</p>
+            </Scroll>
+          </div>
+          <div>
+            <h3>Sua resposta</h3>
+            <textarea
+              id={answer}
+              value={answer}
+              onChange={e => setAnswer(e.target.value)}
+              disabled={!!question.answer}
+            />
+            <button type="button" onClick={() => handleSubmit(question.id)}>
+              Responder aluno
+            </button>
+          </div>
+        </Modal>
       </section>
     </>
   )

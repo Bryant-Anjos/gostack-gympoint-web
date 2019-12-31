@@ -23,11 +23,12 @@ export default function questions(state = INITIAL_STATE, action) {
         break
       }
       case '@questions/UPDATE_SUCCESS': {
-        const index = state.index.findIndex(
-          question => question.id === action.payload.question.id
+        const listQuestions = state.index.filter(
+          question => Number(question.id) !== Number(action.payload.question.id)
         )
 
-        draft.index[index] = action.payload.question
+        console.log(action.payload)
+        draft.index = listQuestions
         break
       }
       default:
