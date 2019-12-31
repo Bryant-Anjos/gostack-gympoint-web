@@ -59,7 +59,7 @@ function List({ enrollments, loading }) {
           <table>
             <thead>
               <tr>
-                <td>Aluno</td>
+                <td className="td-left">Aluno</td>
                 <td>Plano</td>
                 <td>Início</td>
                 <td>Término</td>

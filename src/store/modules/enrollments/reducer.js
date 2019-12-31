@@ -39,6 +39,8 @@ export default function enrollments(state = INITIAL_STATE, action) {
           item => Number(item.id) === Number(enrollment.id)
         )
 
+        const checkColor = enrollment.enable ? '#42cb59' : '#ddd'
+
         const start_date_formated = format(
           parseISO(enrollment.start_date),
           "dd 'de' MMMM 'de' yyyy",
@@ -58,6 +60,7 @@ export default function enrollments(state = INITIAL_STATE, action) {
         draft.index[index] = {
           ...draft.index[index],
           ...action.payload.enrollment,
+          checkColor,
           start_date_formated,
           end_date_formated,
         }
@@ -65,6 +68,8 @@ export default function enrollments(state = INITIAL_STATE, action) {
       }
       case '@enrollments/CREATE_SUCCESS': {
         const { enrollment } = action.payload
+
+        const checkColor = enrollment.enable ? '#42cb59' : '#ddd'
 
         const start_date_formated = format(
           parseISO(enrollment.start_date),
@@ -84,6 +89,7 @@ export default function enrollments(state = INITIAL_STATE, action) {
 
         draft.index.unshift({
           ...enrollment,
+          checkColor,
           start_date_formated,
           end_date_formated,
         })

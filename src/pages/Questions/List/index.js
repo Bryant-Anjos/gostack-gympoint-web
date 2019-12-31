@@ -50,7 +50,7 @@ function List({ questions, loading }) {
           <table>
             <thead>
               <tr>
-                <td>Aluno</td>
+                <td className="td-left">Aluno</td>
                 <td colSpan={1} />
               </tr>
             </thead>
@@ -62,7 +62,7 @@ function List({ questions, loading }) {
           </table>
         )}
 
-        <Modal isOpen={open} onRequestClose={() => isOpen(!open)}>
+        <Modal isOpen={open} onRequestClose={() => isOpen(false)}>
           <div>
             <h3>
               {Object.keys(question).length === 0

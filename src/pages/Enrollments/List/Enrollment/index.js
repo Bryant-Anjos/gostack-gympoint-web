@@ -14,7 +14,7 @@ export default function Enrollment({ enrollment, openModal }) {
 
   return (
     <tr>
-      <td>{enrollment.student.name}</td>
+      <td className="td-left">{enrollment.student.name}</td>
       <td>{enrollment.plan.title}</td>
       <td>{enrollment.start_date_formated}</td>
       <td>{enrollment.end_date_formated}</td>

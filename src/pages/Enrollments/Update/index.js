@@ -2,27 +2,22 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { MdKeyboardArrowLeft, MdCheck } from 'react-icons/md'
-import { Form, Input } from '@rocketseat/unform'
+import DatePicker from 'react-datepicker'
 import Select from 'react-select'
 import SelectAsync from 'react-select/async'
+import pt from 'date-fns/locale/pt'
 import { toast } from 'react-toastify'
 import PropTypes from 'prop-types'
-import * as Yup from 'yup'
 
 import api from '~/services/api'
 
 import { updateRequest } from '~/store/modules/enrollments/actions'
 
-const schema = Yup.object().shape({
-  start_date: Yup.date()
-    .typeError('Data inválida')
-    .min(new Date(), 'Datas passadas não são permitidas'),
-})
-
 export default function Update({ location }) {
   const dispatch = useDispatch()
   const [enrollment, setEnrollment] = useState({})
   const [plans, setPlans] = useState([])
+  const [startDate, setStartDate] = useState(null)
 
   useEffect(() => {
     async function getEnrollment() {
@@ -32,6 +27,7 @@ export default function Update({ location }) {
         const response = await api.get(`enrollments/${id}`)
 
         setEnrollment(response.data)
+        setStartDate(new Date(response.data.start_date))
       } catch (err) {
         toast.error('Matrícula não encontrada')
       }
@@ -54,10 +50,9 @@ export default function Update({ location }) {
     getPlans()
   }, [])
 
-  function handleSubmit() {
-    dispatch(
-      updateRequest(enrollment.id, enrollment.plan.id, enrollment.start_date)
-    )
+  function handleSubmit(e) {
+    e.preventDefault()
+    dispatch(updateRequest(enrollment.id, enrollment.plan.id, startDate))
   }
 
   const customStyles = {
@@ -110,8 +105,8 @@ export default function Update({ location }) {
   }, [enrollment])
 
   const endDate = useMemo(() => {
-    if (Object.keys(enrollment).length !== 0) {
-      const date = new Date(enrollment.start_date)
+    if (Object.keys(enrollment).length !== 0 && startDate) {
+      const date = startDate
       const finalDate = new Date(
         date.setMonth(date.getMonth() + enrollment.plan.duration)
       )
@@ -122,7 +117,7 @@ export default function Update({ location }) {
     }
 
     return ''
-  }, [enrollment])
+  }, [enrollment, startDate])
 
   return Object.keys(enrollment).length === 0 ? (
     <h1>Carregando...</h1>
@@ -149,11 +144,7 @@ export default function Update({ location }) {
       </header>
 
       <section>
-        <Form
-          id="form"
-          schema={schema}
-          onSubmit={data => handleSubmit(enrollment.id, data)}
-        >
+        <form id="form" onSubmit={handleSubmit}>
           <div className="input">
             <label htmlFor="student">
               <p>Aluno</p>
@@ -187,14 +178,15 @@ export default function Update({ location }) {
             </label>
             <label htmlFor="start_date">
               <p>Data de início</p>
-              <Input
+              <DatePicker
                 name="start_date"
-                type="text"
-                placeholder="Escolha a data"
-                value={enrollment.start_date}
-                onChange={e =>
-                  setEnrollment({ ...enrollment, start_date: e.target.value })
-                }
+                selected={startDate}
+                onChange={date => setStartDate(date)}
+                dateFormat="dd/MM/yyyy"
+                minDate={new Date()}
+                showMonthDropdown
+                showYearDropdown
+                locale={pt}
               />
             </label>
             <label htmlFor="end_date">
@@ -206,7 +198,7 @@ export default function Update({ location }) {
               <input id="total" type="text" value={total} disabled />
             </label>
           </div>
-        </Form>
+        </form>
       </section>
     </>
   )

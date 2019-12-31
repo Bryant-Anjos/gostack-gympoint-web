@@ -80,6 +80,10 @@ export const Wrapper = styled.div`
       border-collapse: collapse;
       text-align: center;
 
+      td.td-left {
+        text-align: left;
+      }
+
       thead {
         td {
           font-weight: bold;
@@ -175,6 +179,7 @@ export const Wrapper = styled.div`
             padding: 0 20px;
             border-radius: 4px;
             border: 1px solid #c0c0c0;
+            width: 100%;
           }
 
           span {

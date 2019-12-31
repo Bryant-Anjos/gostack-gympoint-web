@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { MdKeyboardArrowLeft, MdCheck } from 'react-icons/md'
 import { Form, Input } from '@rocketseat/unform'
+import DatePicker from 'react-datepicker'
 import { toast } from 'react-toastify'
+import pt from 'date-fns/locale/pt'
 import PropTypes from 'prop-types'
 import * as Yup from 'yup'
 
@@ -14,7 +16,6 @@ import { updateRequest } from '~/store/modules/students/actions'
 const schema = Yup.object().shape({
   name: Yup.string(),
   email: Yup.string().email('Insira um e-mail válido'),
-  birthday: Yup.date().typeError('Data de nascimento inválida'),
   height: Yup.number()
     .typeError('A altura precisa ser um número válido')
     .min(0)
@@ -28,6 +29,7 @@ const schema = Yup.object().shape({
 export default function Update({ location }) {
   const dispatch = useDispatch()
   const [student, setStudent] = useState({})
+  const [birthday, setBirthday] = useState(null)
 
   useEffect(() => {
     async function getStudent() {
@@ -37,6 +39,7 @@ export default function Update({ location }) {
         const response = await api.get(`students/${id}`)
 
         setStudent(response.data)
+        setBirthday(new Date(response.data.birthday))
       } catch (err) {
         toast.error('Aluno não encontrado')
       }
@@ -45,7 +48,7 @@ export default function Update({ location }) {
     getStudent()
   }, [location.state])
 
-  function handleSubmit(id, { name, email, birthday, weight, height }) {
+  function handleSubmit(id, { name, email, weight, height }) {
     dispatch(updateRequest(id, name, email, birthday, weight, height))
   }
 
@@ -86,7 +89,7 @@ export default function Update({ location }) {
           </div>
 
           <div className="input">
-            <label htmlForIdade="email">
+            <label htmlFor="email">
               <p>Endereço de e-mail</p>
               <Input name="email" type="text" />
             </label>
@@ -95,7 +98,15 @@ export default function Update({ location }) {
           <div className="input">
             <label htmlFor="birthday">
               <p>Data de nascimento</p>
-              <Input name="birthday" type="text" />
+              <DatePicker
+                name="birthday"
+                selected={birthday}
+                onChange={date => setBirthday(date)}
+                dateFormat="dd/MM/yyyy"
+                showMonthDropdown
+                showYearDropdown
+                locale={pt}
+              />
             </label>
             <label htmlFor="weight">
               <p>

@@ -42,7 +42,7 @@ Plan.propTypes = {
   plan: PropTypes.shape({
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    duration_formated: PropTypes.number.isRequired,
+    duration_formated: PropTypes.string.isRequired,
     price_formated: PropTypes.string.isRequired,
   }).isRequired,
   openModal: PropTypes.func.isRequired,

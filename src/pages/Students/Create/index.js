@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { MdKeyboardArrowLeft, MdCheck } from 'react-icons/md'
 import { Form, Input } from '@rocketseat/unform'
+import DatePicker from 'react-datepicker'
+import pt from 'date-fns/locale/pt'
 import * as Yup from 'yup'
 
 import { createRequest } from '~/store/modules/students/actions'
@@ -12,9 +14,6 @@ const schema = Yup.object().shape({
   email: Yup.string()
     .email('Insira um e-mail válido')
     .required('O email é obrigatório'),
-  birthday: Yup.date()
-    .typeError('Data de nascimento inválida')
-    .required('A data de nascimento é obrigatória'),
   height: Yup.number()
     .typeError('A altura precisa ser um número válido')
     .min(0)
@@ -27,8 +26,9 @@ const schema = Yup.object().shape({
 
 export default function Create() {
   const dispatch = useDispatch()
+  const [birthday, setBirthday] = useState(new Date())
 
-  function handleSubmit({ name, email, birthday, weight, height }) {
+  function handleSubmit({ name, email, weight, height }) {
     dispatch(createRequest(name, email, birthday, weight, height))
   }
 
@@ -73,7 +73,15 @@ export default function Create() {
           <div className="input">
             <label htmlFor="birthday">
               <p className="required">Data de nascimento</p>
-              <Input name="birthday" type="text" />
+              <DatePicker
+                name="birthday"
+                selected={birthday}
+                onChange={date => setBirthday(date)}
+                dateFormat="dd/MM/yyyy"
+                showMonthDropdown
+                showYearDropdown
+                locale={pt}
+              />
             </label>
             <label htmlFor="weight">
               <p>

@@ -4,11 +4,11 @@ import PropTypes from 'prop-types'
 export default function Question({ question, openModal }) {
   return (
     <tr>
-      <td>
+      <td className="td-left">
         {question.student.name}
         <small>{question.created_at_formated}</small>
       </td>
-      <td>
+      <td className="td-left">
         <button
           className="update"
           type="button"

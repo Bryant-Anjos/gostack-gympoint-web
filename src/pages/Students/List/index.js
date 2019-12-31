@@ -79,8 +79,8 @@ function List({ students, loading }) {
           <table>
             <thead>
               <tr>
-                <td>Nome</td>
-                <td>E-mail</td>
+                <td className="td-left">Nome</td>
+                <td className="td-left">E-mail</td>
                 <td>Idade</td>
                 <td colSpan={2} />
               </tr>

@@ -2,28 +2,21 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { MdKeyboardArrowLeft, MdCheck } from 'react-icons/md'
-import { Form, Input } from '@rocketseat/unform'
 import Select from 'react-select'
 import SelectAsync from 'react-select/async'
-import * as Yup from 'yup'
+import DatePicker from 'react-datepicker'
+import pt from 'date-fns/locale/pt'
 
 import api from '~/services/api'
 
 import { createRequest } from '~/store/modules/enrollments/actions'
-
-const schema = Yup.object().shape({
-  start_date: Yup.date()
-    .typeError('Data inválida')
-    .min(new Date(), 'Datas passadas não são permitidas')
-    .required('A data é obrigatória'),
-})
 
 export default function Create() {
   const dispatch = useDispatch()
   const [student, setStudent] = useState({})
   const [plan, setPlan] = useState({})
   const [plans, setPlans] = useState([])
-  const [startDate, setStartDate] = useState([])
+  const [startDate, setStartDate] = useState(new Date())
 
   useEffect(() => {
     async function getPlans() {
@@ -39,7 +32,8 @@ export default function Create() {
     getPlans()
   }, [])
 
-  function handleSubmit() {
+  function handleSubmit(e) {
+    e.preventDefault()
     dispatch(createRequest(student.id, plan.id, startDate))
   }
 
@@ -118,7 +112,7 @@ export default function Create() {
       </header>
 
       <section>
-        <Form id="form" schema={schema} onSubmit={handleSubmit}>
+        <form id="form" onSubmit={handleSubmit}>
           <div className="input">
             <label htmlFor="student">
               <p>Aluno</p>
@@ -146,12 +140,15 @@ export default function Create() {
             </label>
             <label htmlFor="start_date">
               <p>Data de início</p>
-              <Input
+              <DatePicker
                 name="start_date"
-                type="text"
-                placeholder="Escolha a data"
-                value={startDate}
-                onChange={e => setStartDate(e.target.value)}
+                selected={startDate}
+                onChange={date => setStartDate(date)}
+                dateFormat="dd/MM/yyyy"
+                minDate={new Date()}
+                showMonthDropdown
+                showYearDropdown
+                locale={pt}
               />
             </label>
             <label htmlFor="end_date">
@@ -163,7 +160,7 @@ export default function Create() {
               <input id="total" type="text" value={total} disabled />
             </label>
           </div>
-        </Form>
+        </form>
       </section>
     </>
   )

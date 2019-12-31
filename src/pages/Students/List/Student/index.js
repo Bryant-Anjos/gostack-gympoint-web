@@ -13,8 +13,8 @@ export default function Student({ student, openModal }) {
 
   return (
     <tr>
-      <td>{student.name}</td>
-      <td>{student.email}</td>
+      <td className="td-left">{student.name}</td>
+      <td className="td-left">{student.email}</td>
       <td>{student.age}</td>
       <td>
         <button
