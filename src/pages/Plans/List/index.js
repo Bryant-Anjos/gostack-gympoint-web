@@ -1,19 +1,41 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { connect, useDispatch } from 'react-redux'
 import { MdAdd } from 'react-icons/md'
 import PropTypes from 'prop-types'
 
 import Plan from './Plan'
+import Modal from '~/components/ConfirmModal'
 
-import { listRequest } from '~/store/modules/plans/actions'
+import { listRequest, removeRequest } from '~/store/modules/plans/actions'
 
 function List({ plans, loading }) {
   const dispatch = useDispatch()
+  const [plan, setPlan] = useState({})
+  const [open, isOpen] = useState(false)
 
   useEffect(() => {
     if (plans.length === 0) dispatch(listRequest())
   }, [dispatch, plans.length])
+
+  function handleDelete() {
+    dispatch(removeRequest(plan.id))
+    isOpen(false)
+  }
+
+  function openModal(id, title) {
+    setPlan({ id, title })
+    isOpen(true)
+  }
+
+  const message = useMemo(() => {
+    return {
+      title: 'Deletar plano',
+      text: `O plano ${
+        plan.title ? plan.title : ''
+      } será deletado, deseja prosseguir?`,
+    }
+  }, [plan.title])
 
   return (
     <>
@@ -44,13 +66,20 @@ function List({ plans, loading }) {
               </tr>
             </thead>
             <tbody>
-              {plans.map(plan => (
-                <Plan key={plan.id} plan={plan} />
+              {plans.map(item => (
+                <Plan key={item.id} plan={item} openModal={openModal} />
               ))}
             </tbody>
           </table>
         )}
       </section>
+      <Modal
+        isOpen={open}
+        onRequestClose={() => isOpen(false)}
+        onConfirm={handleDelete}
+        onCancel={() => isOpen(false)}
+        message={message}
+      />
     </>
   )
 }
@@ -61,7 +90,12 @@ List.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  plans: state.plans.index,
+  plans: state.plans.index.map(item => ({
+    ...item,
+    duration_formated: `${item.duration} ${
+      item.duration > 1 ? 'meses' : 'mês'
+    }`,
+  })),
   page: state.plans.page,
   loading: state.plans.loading,
 })

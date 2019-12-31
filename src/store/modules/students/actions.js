@@ -1,6 +1,7 @@
-export function listRequest() {
+export function listRequest(name = null) {
   return {
     type: '@students/LIST_REQUEST',
+    payload: { name },
   }
 }
 

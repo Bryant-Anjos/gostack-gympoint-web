@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
-  height: 100%;
+  min-height: 100%;
   background-color: #e1e8ef;
 
   header {
@@ -78,6 +78,7 @@ export const Wrapper = styled.div`
     table {
       width: 100%;
       border-collapse: collapse;
+      text-align: center;
 
       thead {
         td {

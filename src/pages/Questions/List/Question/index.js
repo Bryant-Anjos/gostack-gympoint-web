@@ -1,12 +1,7 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { removeRequest } from '~/store/modules/students/actions'
-
 export default function Question({ question, openModal }) {
-  const dispatch = useDispatch()
-
   return (
     <tr>
       <td>
@@ -29,8 +24,8 @@ export default function Question({ question, openModal }) {
 Question.propTypes = {
   question: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    duration: PropTypes.number.isRequired,
-    price_formated: PropTypes.string.isRequired,
+    student: PropTypes.object.isRequired,
+    created_at_formated: PropTypes.string.isRequired,
   }).isRequired,
+  openModal: PropTypes.func.isRequired,
 }

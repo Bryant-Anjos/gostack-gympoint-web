@@ -1,19 +1,41 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { connect, useDispatch } from 'react-redux'
 import { MdAdd } from 'react-icons/md'
 import PropTypes from 'prop-types'
 
 import Enrollment from './Enrollment'
+import Modal from '~/components/ConfirmModal'
 
-import { listRequest } from '~/store/modules/enrollments/actions'
+import { listRequest, removeRequest } from '~/store/modules/enrollments/actions'
 
 function List({ enrollments, loading }) {
   const dispatch = useDispatch()
+  const [enrollment, setEnrollment] = useState({})
+  const [open, isOpen] = useState(false)
 
   useEffect(() => {
     if (enrollments.length === 0) dispatch(listRequest())
   }, [dispatch, enrollments.length])
+
+  function handleDelete() {
+    dispatch(removeRequest(enrollment.id))
+    isOpen(false)
+  }
+
+  function openModal(id, studentName) {
+    setEnrollment({ id, studentName })
+    isOpen(true)
+  }
+
+  const message = useMemo(() => {
+    return {
+      title: 'Deletar matrícula',
+      text: `A matrícula do usuário ${
+        enrollment.studentName ? enrollment.studentName : ''
+      } será deletada, deseja prosseguir?`,
+    }
+  }, [enrollment.studentName])
 
   return (
     <>
@@ -46,13 +68,24 @@ function List({ enrollments, loading }) {
               </tr>
             </thead>
             <tbody>
-              {enrollments.map(enrollment => (
-                <Enrollment key={enrollment.id} enrollment={enrollment} />
+              {enrollments.map(item => (
+                <Enrollment
+                  key={item.id}
+                  enrollment={item}
+                  openModal={openModal}
+                />
               ))}
             </tbody>
           </table>
         )}
       </section>
+      <Modal
+        isOpen={open}
+        onRequestClose={() => isOpen(false)}
+        onConfirm={handleDelete}
+        onCancel={() => isOpen(false)}
+        message={message}
+      />
     </>
   )
 }

@@ -1,22 +1,14 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
+
 import history from '~/services/history'
 
-import { removeRequest } from '~/store/modules/students/actions'
-
-export default function Student({ student }) {
-  const dispatch = useDispatch()
-
+export default function Student({ student, openModal }) {
   function handleUpdate(id) {
     history.push({
       pathname: '/students/update',
       state: { id },
     })
-  }
-
-  function handleRemove(id) {
-    dispatch(removeRequest(id))
   }
 
   return (
@@ -37,7 +29,7 @@ export default function Student({ student }) {
         <button
           className="delete"
           type="button"
-          onClick={() => handleRemove(student.id)}
+          onClick={() => openModal(student.id, student.name)}
         >
           apagar
         </button>
@@ -53,4 +45,5 @@ Student.propTypes = {
     email: PropTypes.string.isRequired,
     age: PropTypes.number.isRequired,
   }).isRequired,
+  openModal: PropTypes.func.isRequired,
 }

@@ -1,19 +1,49 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { connect, useDispatch } from 'react-redux'
 import { MdAdd, MdSearch } from 'react-icons/md'
 import PropTypes from 'prop-types'
 
 import Student from './Student'
+import Modal from '~/components/ConfirmModal'
 
-import { listRequest } from '~/store/modules/students/actions'
+import { listRequest, removeRequest } from '~/store/modules/students/actions'
 
 function List({ students, loading }) {
   const dispatch = useDispatch()
+  const [student, setStudent] = useState({})
+  const [open, isOpen] = useState(false)
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     if (students.length === 0) dispatch(listRequest())
   }, [dispatch, students.length])
+
+  function handleDelete() {
+    dispatch(removeRequest(student.id))
+    isOpen(false)
+  }
+
+  function openModal(id, name) {
+    setStudent({ id, name })
+    isOpen(true)
+  }
+
+  const message = useMemo(() => {
+    return {
+      title: 'Deletar usuário',
+      text: `O usuário ${
+        student.name ? student.name : ''
+      } será deletado, deseja prosseguir?`,
+    }
+  }, [student.name])
+
+  function handleSearch(e) {
+    if (e.keyCode === 13) {
+      dispatch(listRequest(search.trim()))
+      setSearch('')
+    }
+  }
 
   return (
     <>
@@ -30,7 +60,14 @@ function List({ students, loading }) {
 
           <label htmlFor="search">
             <MdSearch size={20} />
-            <input type="text" id="search" placeholder="Buscar aluno" />
+            <input
+              type="text"
+              id="search"
+              placeholder="Buscar aluno"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              onKeyDown={handleSearch}
+            />
           </label>
         </div>
       </header>
@@ -49,13 +86,20 @@ function List({ students, loading }) {
               </tr>
             </thead>
             <tbody>
-              {students.map(student => (
-                <Student key={student.id} student={student} />
+              {students.map(item => (
+                <Student key={item.id} student={item} openModal={openModal} />
               ))}
             </tbody>
           </table>
         )}
       </section>
+      <Modal
+        isOpen={open}
+        onRequestClose={() => isOpen(false)}
+        onConfirm={handleDelete}
+        onCancel={() => isOpen(false)}
+        message={message}
+      />
     </>
   )
 }

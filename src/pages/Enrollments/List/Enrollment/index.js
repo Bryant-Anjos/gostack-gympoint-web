@@ -1,24 +1,15 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import { MdCheckCircle } from 'react-icons/md'
 
 import history from '~/services/history'
 
-import { removeRequest } from '~/store/modules/enrollments/actions'
-
-export default function Enrollment({ enrollment }) {
-  const dispatch = useDispatch()
-
+export default function Enrollment({ enrollment, openModal }) {
   function handleUpdate(id) {
     history.push({
       pathname: '/enrollments/update',
       state: { id },
     })
-  }
-
-  function handleRemove(id) {
-    dispatch(removeRequest(id))
   }
 
   return (
@@ -28,10 +19,7 @@ export default function Enrollment({ enrollment }) {
       <td>{enrollment.start_date_formated}</td>
       <td>{enrollment.end_date_formated}</td>
       <td>
-        <MdCheckCircle
-          size={20}
-          color={enrollment.enable ? '#42cb59' : '#ddd'}
-        />
+        <MdCheckCircle size={20} color={enrollment.checkColor} />
       </td>
       <td>
         <button
@@ -46,7 +34,7 @@ export default function Enrollment({ enrollment }) {
         <button
           className="delete"
           type="button"
-          onClick={() => handleRemove(enrollment.id)}
+          onClick={() => openModal(enrollment.id, enrollment.student.name)}
         >
           apagar
         </button>
@@ -64,5 +52,7 @@ Enrollment.propTypes = {
     enable: PropTypes.bool.isRequired,
     student: PropTypes.object.isRequired,
     plan: PropTypes.object.isRequired,
+    checkColor: PropTypes.string.isRequired,
   }).isRequired,
+  openModal: PropTypes.func.isRequired,
 }

@@ -24,6 +24,7 @@ export function* list() {
     const enrollments = response.data.map(enrollment => {
       return {
         ...enrollment,
+        checkColor: enrollment.enable ? '#42cb59' : '#ddd',
         start_date_formated: format(
           parseISO(enrollment.start_date),
           "dd 'de' MMMM 'de' yyyy",

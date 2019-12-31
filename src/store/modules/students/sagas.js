@@ -15,9 +15,10 @@ import {
   createFailure,
 } from './actions'
 
-export function* list() {
+export function* list({ payload }) {
   try {
-    const response = yield call(api.get, 'students')
+    const { name } = payload
+    const response = yield call([api, 'get'], 'students', { params: { name } })
 
     yield put(listSuccess(response.data))
   } catch (err) {
