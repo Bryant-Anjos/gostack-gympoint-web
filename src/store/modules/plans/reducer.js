@@ -15,6 +15,7 @@ export default function plans(state = INITIAL_STATE, action) {
       }
       case '@plans/LIST_SUCCESS': {
         draft.index = action.payload.plans
+        draft.page = action.payload.page
         draft.loading = false
         break
       }

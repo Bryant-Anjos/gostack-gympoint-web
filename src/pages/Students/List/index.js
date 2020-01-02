@@ -6,10 +6,11 @@ import PropTypes from 'prop-types'
 
 import Student from './Student'
 import Modal from '~/components/ConfirmModal'
+import Pagination from '~/components/Pagination'
 
 import { listRequest, removeRequest } from '~/store/modules/students/actions'
 
-function List({ students, loading }) {
+function List({ students, loading, page, amount }) {
   const dispatch = useDispatch()
   const [student, setStudent] = useState({})
   const [open, isOpen] = useState(false)
@@ -40,7 +41,7 @@ function List({ students, loading }) {
 
   function handleSearch(e) {
     if (e.keyCode === 13) {
-      dispatch(listRequest(search.trim()))
+      dispatch(listRequest({ name: search.trim() }))
       setSearch('')
     }
   }
@@ -76,21 +77,29 @@ function List({ students, loading }) {
         {loading ? (
           <span>Carregando...</span>
         ) : (
-          <table>
-            <thead>
-              <tr>
-                <td className="td-left">Nome</td>
-                <td className="td-left">E-mail</td>
-                <td>Idade</td>
-                <td colSpan={2} />
-              </tr>
-            </thead>
-            <tbody>
-              {students.map(item => (
-                <Student key={item.id} student={item} openModal={openModal} />
-              ))}
-            </tbody>
-          </table>
+          <>
+            <table>
+              <thead>
+                <tr>
+                  <td className="td-left">Nome</td>
+                  <td className="td-left">E-mail</td>
+                  <td>Idade</td>
+                  <td colSpan={2} />
+                </tr>
+              </thead>
+              <tbody>
+                {students.map(item => (
+                  <Student key={item.id} student={item} openModal={openModal} />
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              page={page}
+              amount={amount}
+              onClickPrevious={() => dispatch(listRequest({ page: page - 1 }))}
+              onClickNext={() => dispatch(listRequest({ page: page + 1 }))}
+            />
+          </>
         )}
       </section>
       <Modal
@@ -106,11 +115,14 @@ function List({ students, loading }) {
 
 List.propTypes = {
   students: PropTypes.arrayOf(PropTypes.object).isRequired,
+  amount: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = state => ({
   students: state.students.index,
+  amount: state.students.index.length,
   page: state.students.page,
   loading: state.students.loading,
 })

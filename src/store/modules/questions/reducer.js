@@ -15,6 +15,7 @@ export default function questions(state = INITIAL_STATE, action) {
       }
       case '@questions/LIST_SUCCESS': {
         draft.index = action.payload.questions
+        draft.page = action.payload.page
         draft.loading = false
         break
       }
@@ -27,7 +28,6 @@ export default function questions(state = INITIAL_STATE, action) {
           question => Number(question.id) !== Number(action.payload.question.id)
         )
 
-        console.log(action.payload)
         draft.index = listQuestions
         break
       }

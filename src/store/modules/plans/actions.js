@@ -1,13 +1,14 @@
-export function listRequest() {
+export function listRequest(page = 1) {
   return {
     type: '@plans/LIST_REQUEST',
+    payload: { page },
   }
 }
 
-export function listSuccess(plans) {
+export function listSuccess(plans, page) {
   return {
     type: '@plans/LIST_SUCCESS',
-    payload: { plans },
+    payload: { plans, page },
   }
 }
 

@@ -1,13 +1,14 @@
-export function listRequest() {
+export function listRequest(page = 1) {
   return {
     type: '@questions/LIST_REQUEST',
+    payload: { page },
   }
 }
 
-export function listSuccess(questions) {
+export function listSuccess(questions, page) {
   return {
     type: '@questions/LIST_SUCCESS',
-    payload: { questions },
+    payload: { questions, page },
   }
 }
 

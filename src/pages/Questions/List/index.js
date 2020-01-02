@@ -4,12 +4,13 @@ import PropTypes from 'prop-types'
 import { toast } from 'react-toastify'
 
 import Question from './Question'
+import Pagination from '~/components/Pagination'
 
 import { listRequest, updateRequest } from '~/store/modules/questions/actions'
 
 import { Modal, Scroll } from './styles'
 
-function List({ questions, loading }) {
+function List({ questions, loading, page, amount }) {
   const dispatch = useDispatch()
   const [open, isOpen] = useState(false)
   const [question, setQuestion] = useState({})
@@ -47,19 +48,31 @@ function List({ questions, loading }) {
         {loading ? (
           <span>Carregando...</span>
         ) : (
-          <table>
-            <thead>
-              <tr>
-                <td className="td-left">Aluno</td>
-                <td colSpan={1} />
-              </tr>
-            </thead>
-            <tbody>
-              {questions.map(item => (
-                <Question key={item.id} question={item} openModal={openModal} />
-              ))}
-            </tbody>
-          </table>
+          <>
+            <table>
+              <thead>
+                <tr>
+                  <td className="td-left">Aluno</td>
+                  <td colSpan={1} />
+                </tr>
+              </thead>
+              <tbody>
+                {questions.map(item => (
+                  <Question
+                    key={item.id}
+                    question={item}
+                    openModal={openModal}
+                  />
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              page={page}
+              amount={amount}
+              onClickPrevious={() => dispatch(listRequest(page - 1))}
+              onClickNext={() => dispatch(listRequest(page + 1))}
+            />
+          </>
         )}
 
         <Modal isOpen={open} onRequestClose={() => isOpen(false)}>
@@ -93,11 +106,14 @@ function List({ questions, loading }) {
 
 List.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  amount: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = state => ({
   questions: state.questions.index,
+  amount: state.questions.index.length,
   page: state.questions.page,
   loading: state.questions.loading,
 })

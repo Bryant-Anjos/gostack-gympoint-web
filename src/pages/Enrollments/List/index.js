@@ -6,10 +6,11 @@ import PropTypes from 'prop-types'
 
 import Enrollment from './Enrollment'
 import Modal from '~/components/ConfirmModal'
+import Pagination from '~/components/Pagination'
 
 import { listRequest, removeRequest } from '~/store/modules/enrollments/actions'
 
-function List({ enrollments, loading }) {
+function List({ enrollments, loading, page, amount }) {
   const dispatch = useDispatch()
   const [enrollment, setEnrollment] = useState({})
   const [open, isOpen] = useState(false)
@@ -56,27 +57,35 @@ function List({ enrollments, loading }) {
         {loading ? (
           <span>Carregando...</span>
         ) : (
-          <table>
-            <thead>
-              <tr>
-                <td className="td-left">Aluno</td>
-                <td>Plano</td>
-                <td>Início</td>
-                <td>Término</td>
-                <td>Ativa</td>
-                <td colSpan={2} />
-              </tr>
-            </thead>
-            <tbody>
-              {enrollments.map(item => (
-                <Enrollment
-                  key={item.id}
-                  enrollment={item}
-                  openModal={openModal}
-                />
-              ))}
-            </tbody>
-          </table>
+          <>
+            <table>
+              <thead>
+                <tr>
+                  <td className="td-left">Aluno</td>
+                  <td>Plano</td>
+                  <td>Início</td>
+                  <td>Término</td>
+                  <td>Ativa</td>
+                  <td colSpan={2} />
+                </tr>
+              </thead>
+              <tbody>
+                {enrollments.map(item => (
+                  <Enrollment
+                    key={item.id}
+                    enrollment={item}
+                    openModal={openModal}
+                  />
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              page={page}
+              amount={amount}
+              onClickPrevious={() => dispatch(listRequest(page - 1))}
+              onClickNext={() => dispatch(listRequest(page + 1))}
+            />
+          </>
         )}
       </section>
       <Modal
@@ -92,11 +101,14 @@ function List({ enrollments, loading }) {
 
 List.propTypes = {
   enrollments: PropTypes.arrayOf(PropTypes.object).isRequired,
+  amount: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = state => ({
   enrollments: state.enrollments.index,
+  amount: state.enrollments.index.length,
   page: state.enrollments.page,
   loading: state.enrollments.loading,
 })

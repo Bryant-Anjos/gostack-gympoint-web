@@ -51,6 +51,11 @@ export const Container = styled.div`
 export const LinkItem = styled(Link)`
   margin: 0 10px;
   color: ${props => (props.selected ? '#333' : '#999')};
+  transition: color 0.3s;
+
+  &:hover {
+    ${props => (props.selected ? null : 'color: #333')}
+  }
 `
 
 export const Profile = styled.div`
@@ -61,7 +66,9 @@ export const Profile = styled.div`
     color: #444;
   }
 
-  span {
+  button {
+    border: none;
+    background: none;
     display: block;
     margin-top: 5px;
     cursor: pointer;

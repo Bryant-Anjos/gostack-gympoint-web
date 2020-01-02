@@ -17,10 +17,12 @@ import {
 
 export function* list({ payload }) {
   try {
-    const { name } = payload
-    const response = yield call([api, 'get'], 'students', { params: { name } })
+    const { name, page } = payload
+    const response = yield call(api.get, 'students', {
+      params: { name, page },
+    })
 
-    yield put(listSuccess(response.data))
+    yield put(listSuccess(response.data, page))
   } catch (err) {
     toast.error('Falha ao listar alunos, tente novamente mais tarde')
     yield put(listFailure())

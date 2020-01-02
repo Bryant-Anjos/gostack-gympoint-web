@@ -13,9 +13,11 @@ import {
   updateFailure,
 } from './actions'
 
-export function* list() {
+export function* list({ payload }) {
   try {
-    const response = yield call(api.get, 'help-orders')
+    const { page } = payload
+
+    const response = yield call(api.get, 'help-orders', { params: { page } })
 
     const questions = response.data.map(question => ({
       ...question,
@@ -29,7 +31,7 @@ export function* list() {
       ),
     }))
 
-    yield put(listSuccess(questions))
+    yield put(listSuccess(questions, page))
   } catch (err) {
     toast.error('Falha ao listar perguntas, tente novamente mais tarde')
     yield put(listFailure())

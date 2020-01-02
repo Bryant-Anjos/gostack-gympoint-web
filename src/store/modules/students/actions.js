@@ -1,14 +1,14 @@
-export function listRequest(name = null) {
+export function listRequest({ name = null, page = 1 } = {}) {
   return {
     type: '@students/LIST_REQUEST',
-    payload: { name },
+    payload: { name, page },
   }
 }
 
-export function listSuccess(students) {
+export function listSuccess(students, page) {
   return {
     type: '@students/LIST_SUCCESS',
-    payload: { students },
+    payload: { students, page },
   }
 }
 

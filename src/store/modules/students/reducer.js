@@ -15,6 +15,7 @@ export default function students(state = INITIAL_STATE, action) {
       }
       case '@students/LIST_SUCCESS': {
         draft.index = action.payload.students
+        draft.page = action.payload.page
         draft.loading = false
         break
       }

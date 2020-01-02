@@ -15,9 +15,11 @@ import {
   createFailure,
 } from './actions'
 
-export function* list() {
+export function* list({ payload }) {
   try {
-    const response = yield call(api.get, 'plans')
+    const { page } = payload
+
+    const response = yield call(api.get, 'plans', { params: { page } })
 
     const plans = response.data.map(plan => ({
       ...plan,
@@ -27,7 +29,7 @@ export function* list() {
       }).format(plan.price),
     }))
 
-    yield put(listSuccess(plans))
+    yield put(listSuccess(plans, page))
   } catch (err) {
     toast.error('Falha ao listar planos, tente novamente mais tarde')
     yield put(listFailure())

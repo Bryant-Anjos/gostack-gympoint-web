@@ -1,8 +1,10 @@
 import styled from 'styled-components'
+import { darken } from 'polished'
 
 export const Wrapper = styled.div`
   min-height: 100%;
   background-color: #e1e8ef;
+  padding-bottom: 30px;
 
   header {
     display: flex;
@@ -40,13 +42,22 @@ export const Wrapper = styled.div`
       color: #fff;
       font-weight: bold;
       text-transform: uppercase;
+      transition: background-color 0.3s;
 
       &.red {
         background-color: #ee4d64;
+
+        &:hover {
+          background-color: ${darken(0.03, '#ee4d64')};
+        }
       }
 
       &.grey {
         background-color: #c0c0c0;
+
+        &:hover {
+          background-color: ${darken(0.03, '#c0c0c0')};
+        }
       }
 
       svg {

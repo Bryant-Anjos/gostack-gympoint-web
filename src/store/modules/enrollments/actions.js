@@ -1,13 +1,14 @@
-export function listRequest() {
+export function listRequest(page = 1) {
   return {
     type: '@enrollments/LIST_REQUEST',
+    payload: { page },
   }
 }
 
-export function listSuccess(enrollments) {
+export function listSuccess(enrollments, page) {
   return {
     type: '@enrollments/LIST_SUCCESS',
-    payload: { enrollments },
+    payload: { enrollments, page },
   }
 }
 

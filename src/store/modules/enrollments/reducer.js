@@ -17,6 +17,7 @@ export default function enrollments(state = INITIAL_STATE, action) {
       }
       case '@enrollments/LIST_SUCCESS': {
         draft.index = action.payload.enrollments
+        draft.page = action.payload.page
         draft.loading = false
         break
       }
