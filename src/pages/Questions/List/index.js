@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import { connect, useDispatch } from 'react-redux'
+import React, { useState, useEffect, useMemo } from 'react'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { toast } from 'react-toastify'
+import socketio from 'socket.io-client'
 
 import Question from './Question'
 import Pagination from '~/components/Pagination'
 
-import { listRequest, updateRequest } from '~/store/modules/questions/actions'
+import {
+  listRequest,
+  updateRequest,
+  addQuestion,
+} from '~/store/modules/questions/actions'
 
 import { Modal, Scroll } from './styles'
 
@@ -15,6 +20,22 @@ function List({ questions, loading, page, amount }) {
   const [open, isOpen] = useState(false)
   const [question, setQuestion] = useState({})
   const [answer, setAnswer] = useState('')
+
+  const user = useSelector(state => state.user.profile)
+
+  const socket = useMemo(
+    () =>
+      socketio('http://192.168.0.107:3333', {
+        query: {
+          user_id: user.id,
+        },
+      }),
+    [user.id]
+  )
+
+  useEffect(() => {
+    socket.on('question', newQuestion => dispatch(addQuestion(newQuestion)))
+  }, [dispatch, socket])
 
   useEffect(() => {
     if (questions.length === 0) dispatch(listRequest())

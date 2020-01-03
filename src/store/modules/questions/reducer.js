@@ -1,4 +1,6 @@
 import produce from 'immer'
+import { parseISO, formatRelative } from 'date-fns'
+import pt from 'date-fns/locale/pt'
 
 const INITIAL_STATE = {
   loading: false,
@@ -29,6 +31,22 @@ export default function questions(state = INITIAL_STATE, action) {
         )
 
         draft.index = listQuestions
+        break
+      }
+      case '@questions/ADD_QUESTION': {
+        const question = {
+          ...action.payload.question,
+          created_at_formated: formatRelative(
+            parseISO(action.payload.question.created_at),
+            new Date(),
+            {
+              locale: pt,
+              addSuffix: true,
+            }
+          ),
+        }
+
+        draft.index.unshift(question)
         break
       }
       default:

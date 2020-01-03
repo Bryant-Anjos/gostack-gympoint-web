@@ -37,3 +37,10 @@ export function updateFailure() {
     type: '@questions/UPDATE_FAILURE',
   }
 }
+
+export function addQuestion(question) {
+  return {
+    type: '@questions/ADD_QUESTION',
+    payload: { question },
+  }
+}
